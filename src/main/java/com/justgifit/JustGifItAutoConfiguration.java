@@ -29,7 +29,7 @@ public class JustGifItAutoConfiguration {
     private JustGifItProperties properties;
 
     @Bean
-    @ConditionalOnProperty(prefix = "com.justgifit" , name = "create-result-dir")
+    @ConditionalOnProperty(prefix = "com.justGifIt" , name = "create-result-dir")
     public Boolean createResultDir(){
         if(!properties.getLocation().exists()){
             properties.getLocation().mkdir();
