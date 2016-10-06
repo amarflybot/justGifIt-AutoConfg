@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.inject.Inject;
 import java.io.File;
 
 /**
@@ -20,17 +22,17 @@ import java.io.File;
 
 @Configuration
 @ConditionalOnClass({FFmpegFrameGrabber.class, AnimatedGifEncoder.class})
+@EnableConfigurationProperties(JustGifItProperties.class)
 public class JustGifItAutoConfiguration {
 
-    @Value("${spring.http.multipart.location}/gif/")
-    private String location;
+    @Inject
+    private JustGifItProperties properties;
 
     @Bean
     @ConditionalOnProperty(prefix = "com.justgifit" , name = "create-result-dir")
     public Boolean createResultDir(){
-        File gifFolder = new File(location);
-        if(!gifFolder.exists()){
-            gifFolder.mkdir();
+        if(!properties.getLocation().exists()){
+            properties.getLocation().mkdir();
         }
 
         return true;
